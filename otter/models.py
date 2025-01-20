@@ -1,8 +1,18 @@
 from typing import Optional
 from pathlib import Path
+from dataclasses import dataclass
 from openpyxl.workbook.workbook import Workbook
 from openpyxl import load_workbook
 from otter.clients.llama_parse_client import LlamaParseClient
+
+
+
+@dataclass
+class GradebookEntry:
+    student: str
+    field: str
+    value: str
+    section: str
 
 
 class Gradebook:
