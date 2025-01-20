@@ -23,7 +23,7 @@ def test_formatter_iter_unit_table_rows(gradebook):
 
 def test_formatter_format(gradebook):
     formatter = GradebookFormatter(gradebook)
-    res = formatter.format()
+    res = formatter.to_dict()
     assert len(res) > 0
     assert len(res['Unit1']) > 0
     assert res['Unit1'][0].student == 'Student A'

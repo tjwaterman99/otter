@@ -1,8 +1,14 @@
+import json
+from enum import Enum
 from functools import cache
 from otter.models import Gradebook, GradebookEntry
+from otter.serializers import OtterJSONEncoder
 
 
 class GradebookFormatter:
+
+    class FormatType(Enum):
+        json = 'json'
 
     def __init__(self, gradebook: Gradebook):
         self.gradebook = gradebook
@@ -22,11 +28,14 @@ class GradebookFormatter:
         for unit_name, unit_page in self.iter_unit_pages():
             yield unit_name, unit_page['items'][1]['rows']
 
-    def format(self) -> dict[str, list[GradebookEntry]]:
+    def to_dict(self) -> dict[str, list[GradebookEntry]]:
         res = dict()
         for unit_name, rows in self.iter_unit_table_rows():
             res[unit_name] = GradebookUnitTableFormatter(rows).format()
         return res
+
+    def to_json(self) -> str:
+        return json.dumps(self.to_dict(), cls=OtterJSONEncoder, indent=2)
 
 
 class GradebookUnitTableFormatter:

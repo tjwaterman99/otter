@@ -33,8 +33,3 @@ class Gradebook:
         resp = client.parse(self.path)
         self.parsed = resp
         return self.parsed
-
-    def num_pages(self) -> int:
-        if not self.parsed:
-            raise AttributeError("Gradebook has not been parsed")
-        return len(self.parsed['pages'])
