@@ -25,8 +25,9 @@ def gradebooks():
 
 @gradebooks.command()
 @option('--format', 'format_type', type=Choice(GradebookFormatter.FormatType._member_names_), help="The target format of the gradebook", default=GradebookFormatter.FormatType.json.value)
+@option('--out', type=Path, default=None, help="Path to write the result")
 @argument('path', nargs=1, type=Path)
-def convert(format_type: str, path: Path):
+def convert(format_type: str, path: Path, out: Path):
     """
     Convert a Gradebook from .xlsx format to other formats
     """
@@ -36,9 +37,12 @@ def convert(format_type: str, path: Path):
     gradebook.parse()
     formatter = GradebookFormatter(gradebook=gradebook)
 
+    if out:
+        out = out.open('w')
+
     if format_type == GradebookFormatter.FormatType.json:
-        print(formatter.to_json())
+        print(formatter.to_json(), file=out)
     elif format_type == GradebookFormatter.FormatType.csv:
-        print(formatter.to_csv())
+        print(formatter.to_csv(), file=out)
     else:
         raise ValueError("Unsupported format:", format_type)
