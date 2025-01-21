@@ -1,4 +1,7 @@
+import csv
 import json
+from io import StringIO
+from dataclasses import asdict
 from enum import Enum
 from functools import cache
 from otter.models import Gradebook, GradebookEntry
@@ -8,6 +11,7 @@ from otter.serializers import OtterJSONEncoder
 class GradebookFormatter:
 
     class FormatType(Enum):
+        csv = 'csv'
         json = 'json'
 
     def __init__(self, gradebook: Gradebook):
@@ -36,6 +40,26 @@ class GradebookFormatter:
 
     def to_json(self) -> str:
         return json.dumps(self.to_dict(), cls=OtterJSONEncoder, indent=2)
+    
+    def to_rows(self) -> list[dict]:
+        result = list()
+        data = self.to_dict()
+        for sheet, rows in data.items():
+            for row in rows:
+                r = asdict(row)
+                r.update(sheet=sheet)
+                result.append(r)
+        return result
+    
+    def to_csv(self) -> str:
+        out = StringIO()
+        rows = self.to_rows()
+        fieldnames = list(rows[0].keys())
+        writer = csv.DictWriter(f=out, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rowdicts=rows)
+        out.seek(0)
+        return out.read()
 
 
 class GradebookUnitTableFormatter:
