@@ -33,6 +33,27 @@ def test_formatter_format(gradebook):
     assert res['Unit1'][14].section == 'Reading'
 
 
+def test_formatter_to_rows(gradebook):
+    formatter = GradebookFormatter(gradebook)
+    rows = formatter.to_rows()
+    assert 'sheet' in rows[0]
+    assert 'student' in rows[0]
+    assert 'field' in rows[0]
+    assert 'value' in rows[0]
+    assert 'section' in rows[0]
+
+
+def test_formatter_to_csv(gradebook):
+    formatter = GradebookFormatter(gradebook)
+    res = formatter.to_csv()
+    header = res.split('\r\n')[0].split(',')
+    assert 'student' in header
+    assert 'field' in header
+    assert 'value' in header
+    assert 'section' in header
+    assert 'sheet' in header
+
+
 def test_section_formatter():
     f = SectionFormatter(['', '', 'A', '', 'B', '', ''])
     assert f.section_starts == [
