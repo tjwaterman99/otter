@@ -38,7 +38,7 @@ def convert(format_type: str, path: Path):
 
     if format_type == GradebookFormatter.FormatType.json:
         print(formatter.to_json())
-    if format_type == GradebookFormatter.FormatType.csv:
+    elif format_type == GradebookFormatter.FormatType.csv:
         print(formatter.to_csv())
     else:
         raise ValueError("Unsupported format:", format_type)
