@@ -25,7 +25,7 @@ class Gradebook(Base):
     __tablename__ = "gradebooks"
     id = mapped_column(Integer, primary_key=True)
     original_path: Mapped[str]
-    workbook_bytes: Mapped[Optional[bytes]] = mapped_column(BINARY)
+    workbook_bytes: Mapped[bytes] = mapped_column(BINARY)
     parsed: Mapped[Optional[dict]] = mapped_column(JSON)
 
     read_only = True
@@ -37,10 +37,6 @@ class Gradebook(Base):
     @property
     def path(self):
         return Path(self.original_path)
-
-    def load(self) -> Workbook:
-        self.workbook_bytes = self.path.read_bytes()
-        return self.workbook
 
     def parse(self) -> dict:
         client = LlamaParseClient()

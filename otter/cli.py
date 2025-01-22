@@ -33,7 +33,7 @@ def convert(format_type: str, path: Path, out: Path):
     """
 
     format_type = GradebookFormatter.FormatType(format_type)
-    gradebook = Gradebook(path=path)
+    gradebook = Gradebook(original_path=str(path), workbook_bytes=path.read_bytes())
     gradebook.parse()
     formatter = GradebookFormatter(gradebook=gradebook)
 
