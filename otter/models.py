@@ -1,11 +1,16 @@
+import io
 from typing import Optional
 from pathlib import Path
 from dataclasses import dataclass
 from openpyxl.workbook.workbook import Workbook
 from openpyxl import load_workbook
+from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
+from sqlalchemy import Column, BINARY, String, JSON, Integer
 from otter.clients.llama_parse_client import LlamaParseClient
 
 
+class Base(DeclarativeBase):
+    pass
 
 @dataclass
 class GradebookEntry:
@@ -15,17 +20,26 @@ class GradebookEntry:
     section: str
 
 
-class Gradebook:
+class Gradebook(Base):
+
+    __tablename__ = "gradebooks"
+    id = mapped_column(Integer, primary_key=True)
+    original_path: Mapped[str]
+    workbook_bytes: Mapped[Optional[bytes]] = mapped_column(BINARY)
+    parsed: Mapped[Optional[dict]] = mapped_column(JSON)
 
     read_only = True
-    
-    def __init__(self, path: Path, workbook: Optional[Workbook] = None, parsed: Optional[dict] = None):
-        self.path = path
-        self.workbook = workbook
-        self.parsed = parsed
+
+    @property
+    def workbook(self):
+        return load_workbook(io.BytesIO(self.workbook_bytes))
+
+    @property
+    def path(self):
+        return Path(self.original_path)
 
     def load(self) -> Workbook:
-        self.workbook = load_workbook(self.path, read_only=self.read_only)
+        self.workbook_bytes = self.path.read_bytes()
         return self.workbook
 
     def parse(self) -> dict:
