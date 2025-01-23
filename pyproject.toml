@@ -1,7 +1,7 @@
 [project]
 name = "otter"
-version = "0.1.0"
-description = "Gradebook managaer for DLI"
+version = "0.1.0rc0"
+description = "Gradebook manager for DLI"
 authors = [
     {name = "Tom Waterman",email = "tjwaterman99@gmail.com"}
 ]
