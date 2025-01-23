@@ -1,6 +1,4 @@
-print("Starting app. This usually takes about 30 seconds. Please hold.")
-
-from app import app
+from otter import app
 from uvicorn import run
 from threading import Thread
 import webbrowser
