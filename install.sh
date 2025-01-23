@@ -8,4 +8,4 @@ fi
 
 echo "Upgrading pip..."
 /usr/local/bin/python3 -m pip install --upgrade pip
-curl --silent https://raw.githubusercontent.com/tjwaterman99/otter/refs/heads/main/start.py | python3
+curl --silent https://raw.githubusercontent.com/tjwaterman99/otter/refs/heads/main/start.py | /usr/local/bin/python3
