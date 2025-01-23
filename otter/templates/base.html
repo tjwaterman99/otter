@@ -1,0 +1,19 @@
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <div class="container mx-auto max-w-5xl min-h-screen">
+    {% block body %}
+    {% endblock %}
+    </div>
+</body>
+<footer>
+    {% block footer %}
+    {% endblock %}
+</footer>
+</html>
