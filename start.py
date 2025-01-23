@@ -48,7 +48,7 @@ def needs_install():
 
 def install():
     os.makedirs(OTTER_HOME, exist_ok=True)
-    for l in run(['/usr/local/bin/python3.12', '-m', 'venv', str(OTTER_HOME / 'venv')]):
+    for l in run(['/usr/bin/python3', '-m', 'venv', str(OTTER_HOME / 'venv')]):
         print(l)
     version = get_latest_version()
     upgrade(version=version)
